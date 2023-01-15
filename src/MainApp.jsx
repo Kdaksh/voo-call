@@ -89,7 +89,7 @@ const MainApp = ({ roomID, mode, setCall }) => {
         };
       }
     } catch (error) {
-      console.log(error.message);
+  handleAlert(error.message);
     }
   };
 
