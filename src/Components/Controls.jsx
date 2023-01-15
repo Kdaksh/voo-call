@@ -27,7 +27,7 @@ const Controls = ({ localRef, handleEndCall,pc}) => {
     if (mic) {
       LocalStream.getAudioTracks()[0].enabled = false;
     } else {
-      LocalStream.getAudioTracks()[0].enabled = false;
+      LocalStream.getAudioTracks()[0].enabled = true;
     }
   };
   
