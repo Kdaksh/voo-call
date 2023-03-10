@@ -45,7 +45,7 @@ useEffect(() => {
         joinRoom(searchParams.get("joinRoom"));
     }
 
-},[]);
+});
 
 
 

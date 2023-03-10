@@ -3,7 +3,6 @@ import NavBar from "./Components/Navbar";
 import { useContext } from "react";
 import { SnackbarContext } from "./LandingComponent";
 import { createRoom, joinRoom } from "./main";
-import { CircularProgress } from "@mui/material";
 import { firestore } from "./firebase-config";
 import Controls from "./Components/Controls";
 import WaitingRoom from "./Components/WaitingRoom";
@@ -20,36 +19,21 @@ const MainApp = ({ roomID, mode, setCall }) => {
     ],
     iceCandidatePoolSize: 10,
   };
-  const [camera, setCamera] = useState(true);
-  const [mic, setMic] = useState(true);
-
+  
   let localStream;
   let remoteStream;
   const localRef = useRef();
   const remoteRef = useRef();
   const [connected, setConnected] = useState(false);
-  const [LocalStream, setLocalStream] = useState(null);
-  const [RemoteStream, setRemoteStream] = useState(null);
+//  let LocalStream;
+//   let RemoteStream;
   // useEffect(() => {
   //   console.log(LocalStream, RemoteStream);
   // }, [LocalStream, RemoteStream]);
-  const handleCamera = () => {
-    setCamera(!camera);
-    let LocalStrea = localRef.current.srcObject;
-
-    if (camera) {
-
-      LocalStrea.getVideoTracks()[0].enabled = false;
-      //console.log(LocalStrea);
-     // setLocalStream(LocalStrea);
-    } else {
-      LocalStrea.getVideoTracks()[0].enabled = true;
-     // setLocalStream(LocalStream);
-    }
-  };
+  
   
 
-  const [pc, setPc] = useState(new RTCPeerConnection(configuration));
+  const pc = new RTCPeerConnection(configuration);
   
 
   const init = async () => {
@@ -67,10 +51,9 @@ const MainApp = ({ roomID, mode, setCall }) => {
         });
         localRef.current.srcObject = stream;
         localStream = stream;
-        setLocalStream(stream);
         remoteStream = new MediaStream();
         remoteRef.current.srcObject = remoteStream;
-        setRemoteStream(remoteStream);
+        
 
         localStream.getTracks().forEach((track) => {
           pc.addTrack(track, localStream);
@@ -129,19 +112,7 @@ const MainApp = ({ roomID, mode, setCall }) => {
     // eslint-disable-next-line
   }, []);
   
-  const handleMic = () => {
-    setMic(!mic);
-    let LocalStrea = remoteRef.current.srcObject;
-
-    if (mic) {
-    //  let LocalStrea = localRef.current.srcObject;
-      LocalStrea.getAudioTracks()[0].enabled = false;
-     // setLocalStream(LocalStrea);
-    } else {
-      LocalStrea.getAudioTracks()[0].enabled = false;
-     // setLocalStream(LocalStream);
-    }
-  };
+  
   const handleEndCall = async () => {
     console.log("end call");
     setCall(false)
@@ -196,13 +167,7 @@ const MainApp = ({ roomID, mode, setCall }) => {
   
   /*Main Logic Ends*/
   // check wether remote user's mic and camera is on or off
-  const checkRemoteStream = () => {
-    if (remoteStream) {
-      if (remoteStream.getVideoTracks()[0].enabled) {
-        console.log(true);
-      }
-    }
-  };
+  
 
 
   return (
